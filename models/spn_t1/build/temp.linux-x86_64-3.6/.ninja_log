@@ -1,0 +1,3 @@
+# ninja log v5
+1	1790	1601999137848323851	/home/kasatkin/Projects/AnyNet/models/spn_t1/build/temp.linux-x86_64-3.6/src/gaterecurrent2dnoind_kernel.o	132806520147b5b2
+1	22187	1601999158240470487	/home/kasatkin/Projects/AnyNet/models/spn_t1/build/temp.linux-x86_64-3.6/src/gaterecurrent2dnoind_cuda.o	8ffa50977a7b7bbe
