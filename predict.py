@@ -8,7 +8,7 @@ import torch.utils.data
 import torch.nn.functional as F
 from torchvision.utils import save_image
 import time
-from dataloader import loader as DataLoader_
+from dataloader import loader_husky as DataLoader_
 import utils.logger as logger
 import torch.backends.cudnn as cudnn
 from tqdm import tqdm
@@ -57,6 +57,7 @@ parser.add_argument('--evaluate', action='store_true')
 parser.add_argument('--left_images', type=str, default=None)
 parser.add_argument('--right_images', type=str, default=None)
 parser.add_argument('--save_dir', type=str, default='/home/kasatkin/Projects/AnyNet/output/husky_ouster_64/')
+parser.add_argument('--print_avg_time', action='store_true', help='avg prediction time')
 
 args = parser.parse_args()
 
@@ -88,13 +89,17 @@ def main():
 def test(dataloader, model):
     stages = 3 + args.with_spn
     model.eval()
-
+    times = []
     for idx, (imgL, imgR) in tqdm(enumerate(dataloader)):
         imgL = imgL.float().cuda().unsqueeze(0)
         imgR = imgR.float().cuda().unsqueeze(0)
 
         with torch.no_grad():
+            t = time.time()
             outputs = model(imgL, imgR)
+            times.append(time.time() - t)
+            if args.print_avg_time and idx%50 == 0:
+                print(np.mean(times))
             for x in range(stages):
                 output = torch.squeeze(outputs[x], 1)
 
